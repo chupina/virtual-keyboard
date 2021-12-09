@@ -15,7 +15,7 @@ const Keyboard = {
     shift: false,
     language: "en",
     speech: false,
-    sound: false,
+    sound: true,
     dark: false,
     recognition: null,
   },
@@ -59,6 +59,13 @@ const Keyboard = {
         this._updateValue(this.properties.currentCursorPosition, 0, e.key);
       });
     });
+
+    document.addEventListener("keydown", (e) => {
+      this._keyDownHandler(e);
+    });
+    document.addEventListener("keyup", (e) => {
+      this._keyUpHandler(e);
+    });
     this._setSpeechInput();
   },
   _triggerEvent(handlerName) {
@@ -71,7 +78,7 @@ const Keyboard = {
   },
   _createKeys(layout) {
     const keyLayout = document.createDocumentFragment();
-    for (const [key, value] of Object.entries(layout)) {
+   for (const [key, value] of Object.entries(layout)) {
       const keyButton = document.createElement("button");
       keyButton.setAttribute("type", "button");
       keyButton.setAttribute("data-code", key);
@@ -79,32 +86,61 @@ const Keyboard = {
       switch (key) {
         case "Backspace":
           keyButton.classList.add("s-6");
-          keyButton.innerHTML = key;
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_backspace");
 
           break;
         case "Tab":
           keyButton.classList.add("s-6");
-          keyButton.innerHTML = key;
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_tab", key);
           break;
         case "CapsLock":
           keyButton.classList.add("s-8");
-          keyButton.innerHTML = key;
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_capslock", key);
+          console.log(key, keyButton)
           break;
         case "Enter":
           keyButton.classList.add("s-8");
-          keyButton.innerHTML = value.en.value;
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_return", key);
           break;
         case "Shift":
           keyButton.classList.add("s-10");
-          keyButton.innerHTML = key;
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_return", key);
           break;
         case "ShiftRight":
           keyButton.classList.add("s-10");
-          keyButton.innerHTML = key;
+          keyButton.innerHTML =this._setKeyIconHTML("keyboard_return", key);
           break;
         case "Space":
           keyButton.classList.add("s-all");
-          keyButton.innerHTML = value.en.value;
+          keyButton.innerHTML = `<span data-code="Space">${this.properties.language == 'en' ? 'English' : 'Русский'}</span>`;
+          break;
+        case "ArrowRight":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML =this._setKeyIconHTML("keyboard_arrow_right", key);
+          break;
+        case "ArrowLeft":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_arrow_left", key);
+          break;
+          case "Hide":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML = this._setKeyIconHTML("keyboard_hide", key);
+          break;
+        case "Mic":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML = this._setKeyIconHTML("mic_off", key);
+           break;
+          case "Sound":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML = this._setKeyIconHTML("volume_off", key);
+          break;
+        case "Theme":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML = this._setKeyIconHTML("dark_mode", key);
+          break;
+          case "Lang":
+          keyButton.classList.add("s-4");
+          keyButton.innerHTML = this._setKeyIconHTML("language", key);
           break;
 
         default:
@@ -119,10 +155,9 @@ const Keyboard = {
   },
 
   _clickHandler(e) {
-    if (e.target.classList.contains("keyboard__key")) {
+    if (e.target.hasAttribute('data-code')) {
       this.properties.currentCursorPosition =
         this.properties.currentInput.selectionStart;
-      console.log(this.properties.currentCursorPosition);
       switch (e.target.getAttribute("data-code")) {
         case "Shift":
           this._toggleShift();
@@ -136,12 +171,12 @@ const Keyboard = {
           this._triggerEvent("oninput");
           break;
           break;
-          case "Lang":
+        case "Lang":
           this._toggleLang();
-          break;
+                   break;
         case "Mic":
           this._toggleSpeech();
-          break;
+       break;
         case "ArrowRight":
           if (
             this.properties.currentCursorPosition < this.properties.value.length
@@ -156,29 +191,26 @@ const Keyboard = {
           }
           this._triggerEvent("oninput");
           break;
-          case "Tab":
-            this._updateValue(
-              this.properties.currentCursorPosition,
-              0,
-              "  "
-            );
-            this.properties.currentCursorPosition+=2;
-            this._triggerEvent("oninput");
+        case "Tab":
+          this._updateValue(this.properties.currentCursorPosition, 0, "  ");
+          this.properties.currentCursorPosition += 2;
+          this._triggerEvent("oninput");
           break;
-          case "Enter":
-            this._updateValue(
-              this.properties.currentCursorPosition,
-              0,
-              '\n'
-            );
-            this.properties.currentCursorPosition++;
-            this._triggerEvent("oninput");
+          case "Space":
+          this._updateValue(this.properties.currentCursorPosition, 0, " ");
+          this.properties.currentCursorPosition ++;
+          this._triggerEvent("oninput");
+          break;
+        case "Enter":
+          this._updateValue(this.properties.currentCursorPosition, 0, "\n");
+          this.properties.currentCursorPosition++;
+          this._triggerEvent("oninput");
           break;
         case "Sound":
-          // handle sound
+         this._toggleSound()
           break;
         case "Theme":
-          // handle theme
+         this._toggleTheme()
           break;
         case "Hide":
           this.close();
@@ -196,9 +228,28 @@ const Keyboard = {
       }
     }
   },
+  _keyDownHandler(e) {
+    let activeEl = document.querySelector(
+      `.keyboard__key[data-code='${e.code}']`
+    );
+    if (activeEl) {
+      activeEl.classList.add("active");
+      if (e.repeat) return;
+    }
+  },
+  _keyUpHandler(e) {
+    let activeEl = document.querySelector(
+      `.keyboard__key[data-code='${e.code}']`
+    );
+    if (activeEl) {
+      activeEl.classList.remove("active");
+      if (e.repeat) return;
+    }
+  },
   _updateKeyContent() {
     this.elements.keys.forEach((key) => {
-      const keyCode = key.getAttribute("data-code");
+      if (key.childElementCount === 0){
+        const keyCode = key.getAttribute("data-code");
       if (this.properties.shift) {
         const shiftValue =
           keyboardLayout[keyCode][this.properties.language].shift;
@@ -208,8 +259,12 @@ const Keyboard = {
       } else {
         key.textContent =
           keyboardLayout[keyCode][this.properties.language]?.value;
+      } 
       }
     });
+  },
+  _setKeyIconHTML(icon,key){
+    return `<span class="material-icons-outlined" data-code=${key}>${icon}</span>`;
   },
   _updateValue(pos, del, key = "") {
     const tmp = this.properties.value.split("");
@@ -218,7 +273,7 @@ const Keyboard = {
   },
 
   _setSpeechInput() {
-    this.properties.recognition = new SpeechRecognition();
+     this.properties.recognition = new SpeechRecognition();
     this.properties.recognition.interimResults = true;
     this.properties.recognition.lang = "en-US";
     this.properties.recognition.addEventListener("result", (e) => {
@@ -229,7 +284,8 @@ const Keyboard = {
       if (e.results[0].isFinal) {
         let key = ` ${transcript}`;
         this._updateValue(this.properties.currentCursorPosition, 0, key);
-        this.properties.currentCursorPosition = this.properties.currentCursorPosition + key.length;
+        this.properties.currentCursorPosition =
+          this.properties.currentCursorPosition + key.length;
         this._triggerEvent("oninput");
       }
     });
@@ -240,39 +296,66 @@ const Keyboard = {
   },
   _toggleCapsLock() {
     this.properties.capsLock = !this.properties.capsLock;
-    this.properties.capsLock
-      ? this.elements.keys.forEach(
-          (key) => (key.textContent = key.textContent.toUpperCase())
-        )
-      : this.elements.keys.forEach(
-          (key) => (key.textContent = key.textContent.toLowerCase())
-        );
+    for (const key of this.elements.keys) {
+      if (key.childElementCount === 0) {
+        key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+      }
+    }
   },
   _toggleLang() {
     this.properties.language === "en"
       ? (this.properties.language = "ru")
       : (this.properties.language = "en");
-       this._updateKeyContent();
+    this._updateKeyContent();
   },
-  _toggleSpeech(){
-    this.properties.speech = !this.properties.speech;
-    if(this.properties.speech){
-      this.properties.recognition.lang = this.properties.language=='en'? 'en-US':'ru-RU';
-      this.properties.recognition.addEventListener('end',  this.properties.recognition.start);
+  _toggleSpeech() {
+       this.properties.speech = !this.properties.speech;
+     
+    if (this.properties.speech) {
+      this.properties.recognition.lang =
+        this.properties.language == "en" ? "en-US" : "ru-RU";
+      this.properties.recognition.addEventListener(
+        "end",
+        this.properties.recognition.start
+      );
       this.properties.recognition.start();
-    }else{
-      this.properties.recognition.removeEventListener('end', this.properties.recognition.start);
+    } else {
+      this.properties.recognition.removeEventListener(
+        "end",
+        this.properties.recognition.start
+      );
       this.properties.recognition.stop();
+    }
+    this.elements.keys.forEach((key) => {
+      if (key.childElementCount === 1){
+       const keyCode = key.getAttribute("data-code");
+     if (keyCode === "Mic") {
+        key.innerHTML = this.properties.speech? this._setKeyIconHTML('mic', keyCode) : this._setKeyIconHTML('mic_off', keyCode)
      }
-
-
+    }
+  })
   },
-  ///TODO
   _toggleSound() {
     this.properties.sound = !this.properties.sound;
+    this.elements.keys.forEach((key) => {
+      if (key.childElementCount === 1){
+       const keyCode = key.getAttribute("data-code");
+     if (keyCode === "Sound") {
+        key.innerHTML = this.properties.sound? this._setKeyIconHTML('volume_off', keyCode) : this._setKeyIconHTML('volume_up', keyCode)
+     }
+    }
+  })
   },
   _toggleTheme() {
-    this.properties.dark = !this.properties.dark;
+    this.properties.dark = !this.properties.dark; 
+    this.elements.keys.forEach((key) => {
+      if (key.childElementCount === 1){
+       const keyCode = key.getAttribute("data-code");
+     if (keyCode === "Theme") {
+        key.innerHTML = this.properties.dark? this._setKeyIconHTML('dark_mode', keyCode) : this._setKeyIconHTML('light_mode', keyCode)
+     }
+    }
+  })
   },
 
   setCursorPosition(input, position) {
@@ -305,8 +388,7 @@ const Keyboard = {
   },
 };
 
-window.SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 window.addEventListener("DOMContentLoaded", function () {
   Keyboard.init(keyboardLayout);
 });
