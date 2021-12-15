@@ -1,25 +1,28 @@
 
 body {
-  background-color: #cbe8f0;
+background-color: #e2f2f6;
 min-height: 100vh;
 }
 .keyboard--hidden {
   display: none;
 }
+
+
 .keyboard__container {
+  .dark{
+   background-color: red;
+  }
   width:100vw;
-margin: 0 auto;
+  max-width: 900PX;
+margin: 20px auto;
 display: grid;
   grid-template-columns: repeat(60, minmax(10px, auto));
   grid-template-rows: repeat(5, 40px);
  grid-column-gap: 4px;
  grid-row-gap: 8px;
- position:fixed;
- bottom:10vh;
-}
+  
+ 
 
-
-$key-width: 40px;
 
 
 .keyboard__key {
@@ -28,15 +31,61 @@ $key-width: 40px;
   text-align: center;
   color: rgb(70, 69, 69);
   cursor: pointer;
-  border: 1px solid #f2f2f2;
   border-radius: 4px;
+  transition: box-shadow 0.3s ease, transform 0.15s ease;
+
+  border: 1px solid #949090;
+  background-color: #4e4949;
+  color: rgb(243, 242, 242);
+text-shadow: 0 0.5px 1px #777, 0 2px 6px #f2f2f2;
+box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 6px 0 #c0c0c0,
+  0 8px 17px rgba(#444, 0.4), 2px 1px 4px rgba(#444, 0.25),
+  -2px 1px 4px rgba(#444, 0.25), 0 9px 16px rgba(#444, 0.1);
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 4px 0 #c0c0c0,
+      0 2px 35px rgba(#444, 0.3), 2px 2px 4px rgba(#444, 0.25),
+      -2px 2px 4px rgba(#444, 0.25), 0 7px 4px rgba(#444, 0.1);
+    transform: translateY(2px);
+  }
+
+  &:active,
+  &.active {
+    box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 0 0 #c0c0c0,
+      0 0px 30px rgba(#444, 0.15), 2px 2px 4px rgba(#444, 0.25),
+      -2px 2px 4px rgba(#444, 0.25), 0 0px 4px rgba(#444, 0.25);
+    transform: translateY(4px);
+  }
+
+  &.light{
+    color:rgb(100, 96, 96) ;
+    border: 1px solid #f2f2f2;
   text-shadow: 0 0.5px 1px #777, 0 2px 6px #f2f2f2;
    background-color: #f1efef;
-  font-family: sans-serif;
-  transition: box-shadow 0.3s ease, transform 0.15s ease;
   box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 6px 0 #c0c0c0,
     0 8px 17px rgba(#444, 0.4), 2px 1px 4px rgba(#444, 0.25),
     -2px 1px 4px rgba(#444, 0.25), 0 9px 16px rgba(#444, 0.1);
+
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 4px 0 #c0c0c0,
+        0 2px 35px rgba(#444, 0.3), 2px 2px 4px rgba(#444, 0.25),
+        -2px 2px 4px rgba(#444, 0.25), 0 7px 4px rgba(#444, 0.1);
+      transform: translateY(2px);
+    }
+  
+    &:active,
+    &.active {
+      box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 0 0 #c0c0c0,
+        0 0px 30px rgba(#444, 0.15), 2px 2px 4px rgba(#444, 0.25),
+        -2px 2px 4px rgba(#444, 0.25), 0 0px 4px rgba(#444, 0.25);
+      transform: translateY(4px);
+    }
+  }
+
+  
+  
     &.s-4 {
       grid-column: auto / span 4;
   }
@@ -53,30 +102,9 @@ $key-width: 40px;
     &.s-all {
       grid-column: auto / span 30;
     }
-  &:hover,
-  &:focus {
-    box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 4px 0 #c0c0c0,
-      0 2px 35px rgba(#444, 0.3), 2px 2px 4px rgba(#444, 0.25),
-      -2px 2px 4px rgba(#444, 0.25), 0 7px 4px rgba(#444, 0.1);
-    transform: translateY(2px);
-  }
-
-  &:active {
-    box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 0 0 #c0c0c0,
-      0 0px 30px rgba(#444, 0.15), 2px 2px 4px rgba(#444, 0.25),
-      -2px 2px 4px rgba(#444, 0.25), 0 0px 4px rgba(#444, 0.25);
-    transform: translateY(4px);
-  }
-
-  &.active{
-    background-color: rgb(253, 251, 251);
-    box-shadow: 0 0 1px #888, 0 1px 0 #fff, 0 0 0 #c0c0c0,
-      0 0px 30px rgba(#444, 0.15), 2px 2px 4px rgba(#444, 0.25),
-      -2px 2px 4px rgba(#444, 0.25), 0 0px 4px rgba(#444, 0.25);
-    transform: translateY(4px);
+ 
   }
 }
-
 .textInput{
   width: 100%;
   height: 150px;

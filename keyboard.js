@@ -32,7 +32,7 @@ const Keyboard = {
       "keyboard",
       "keyboard--hidden"
     );
-    this.elements.keyboardContainer.setAttribute('draggable', true);
+
     this.elements.keysContainer.classList.add("keyboard__container");
     this.elements.keysContainer.appendChild(this._createKeys(layout));
     this.elements.keys =
@@ -79,11 +79,11 @@ const Keyboard = {
   },
   _createKeys(layout) {
     const keyLayout = document.createDocumentFragment();
-   for (const [key, value] of Object.entries(layout)) {
+    for (const [key, value] of Object.entries(layout)) {
       const keyButton = document.createElement("button");
       keyButton.setAttribute("type", "button");
       keyButton.setAttribute("data-code", key);
-      keyButton.classList.add("keyboard__key");
+    keyButton.classList.add("keyboard__key", "light");
       switch (key) {
         case "Backspace":
           keyButton.classList.add("s-6");
@@ -97,7 +97,7 @@ const Keyboard = {
         case "CapsLock":
           keyButton.classList.add("s-8");
           keyButton.innerHTML = this._setKeyIconHTML("keyboard_capslock", key);
-          console.log(key, keyButton)
+          console.log(key, keyButton);
           break;
         case "Enter":
           keyButton.classList.add("s-8");
@@ -113,33 +113,39 @@ const Keyboard = {
           break;
         case "Space":
           keyButton.classList.add("s-all");
-          keyButton.innerHTML = `<span data-code="Space">${this.properties.language == 'en' ? 'English' : 'Русский'}</span>`;
+          keyButton.innerHTML = `<span data-code="Space">Space</span>`;
           break;
         case "ArrowRight":
           keyButton.classList.add("s-4");
-          keyButton.innerHTML =this._setKeyIconHTML("keyboard_arrow_right", key);
+          keyButton.innerHTML = this._setKeyIconHTML(
+            "keyboard_arrow_right",
+            key
+          );
           break;
         case "ArrowLeft":
           keyButton.classList.add("s-4");
-          keyButton.innerHTML = this._setKeyIconHTML("keyboard_arrow_left", key);
+          keyButton.innerHTML = this._setKeyIconHTML(
+            "keyboard_arrow_left",
+            key
+          );
           break;
-          case "Hide":
+        case "Hide":
           keyButton.classList.add("s-4");
           keyButton.innerHTML = this._setKeyIconHTML("keyboard_hide", key);
           break;
         case "Mic":
           keyButton.classList.add("s-4");
           keyButton.innerHTML = this._setKeyIconHTML("mic_off", key);
-           break;
-          case "Sound":
+          break;
+        case "Sound":
           keyButton.classList.add("s-4");
           keyButton.innerHTML = this._setKeyIconHTML("volume_off", key);
           break;
         case "Theme":
           keyButton.classList.add("s-4");
-          keyButton.innerHTML = this._setKeyIconHTML("dark_mode", key);
+          keyButton.innerHTML = this._setKeyIconHTML("light_mode", key);
           break;
-          case "Lang":
+        case "Lang":
           keyButton.classList.add("s-4");
           keyButton.innerHTML = this._setKeyIconHTML("language", key);
           break;
@@ -156,12 +162,12 @@ const Keyboard = {
   },
 
   _clickHandler(e) {
-    if (e.target.hasAttribute('data-code')) {
+    if (e.target.hasAttribute("data-code")) {
       this.properties.currentCursorPosition =
         this.properties.currentInput.selectionStart;
       switch (e.target.getAttribute("data-code")) {
         case "ShiftLeft":
-          case "ShiftRight":
+        case "ShiftRight":
           this._toggleShift();
           break;
         case "CapsLock":
@@ -175,10 +181,10 @@ const Keyboard = {
           break;
         case "Lang":
           this._toggleLang();
-                   break;
+          break;
         case "Mic":
           this._toggleSpeech();
-       break;
+          break;
         case "ArrowRight":
           if (
             this.properties.currentCursorPosition < this.properties.value.length
@@ -198,9 +204,9 @@ const Keyboard = {
           this.properties.currentCursorPosition += 2;
           this._triggerEvent("oninput");
           break;
-          case "Space":
+        case "Space":
           this._updateValue(this.properties.currentCursorPosition, 0, " ");
-          this.properties.currentCursorPosition ++;
+          this.properties.currentCursorPosition++;
           this._triggerEvent("oninput");
           break;
         case "Enter":
@@ -209,10 +215,10 @@ const Keyboard = {
           this._triggerEvent("oninput");
           break;
         case "Sound":
-         this._toggleSound()
+          this._toggleSound();
           break;
         case "Theme":
-         this._toggleTheme()
+          this._toggleTheme();
           break;
         case "Hide":
           this.close();
@@ -238,6 +244,20 @@ const Keyboard = {
       activeEl.classList.add("active");
       if (e.repeat) return;
     }
+    switch (e.code) {
+      case "CapsLock":
+        this._toggleCapsLock();
+        break;
+      case "ShiftLeft":
+        this._toggleShift();
+        break;
+      case "ShiftRight":
+        this._toggleShift();
+        break;
+
+      default:
+        break;
+    }
   },
   _keyUpHandler(e) {
     let activeEl = document.querySelector(
@@ -250,22 +270,22 @@ const Keyboard = {
   },
   _updateKeyContent() {
     this.elements.keys.forEach((key) => {
-      if (key.childElementCount === 0){
+      if (key.childElementCount === 0) {
         const keyCode = key.getAttribute("data-code");
-      if (this.properties.shift) {
-        const shiftValue =
-          keyboardLayout[keyCode][this.properties.language].shift;
-        if (shiftValue) {
-          key.textContent = shiftValue;
+        if (this.properties.shift) {
+          const shiftValue =
+            keyboardLayout[keyCode][this.properties.language].shift;
+          if (shiftValue) {
+            key.textContent = shiftValue;
+          }
+        } else {
+          key.textContent =
+            keyboardLayout[keyCode][this.properties.language]?.value;
         }
-      } else {
-        key.textContent =
-          keyboardLayout[keyCode][this.properties.language]?.value;
-      } 
       }
     });
   },
-  _setKeyIconHTML(icon,key){
+  _setKeyIconHTML(icon, key) {
     return `<span class="material-icons-outlined" data-code=${key}>${icon}</span>`;
   },
   _updateValue(pos, del, key = "") {
@@ -275,7 +295,7 @@ const Keyboard = {
   },
 
   _setSpeechInput() {
-     this.properties.recognition = new SpeechRecognition();
+    this.properties.recognition = new SpeechRecognition();
     this.properties.recognition.interimResults = true;
     this.properties.recognition.lang = "en-US";
     this.properties.recognition.addEventListener("result", (e) => {
@@ -300,7 +320,9 @@ const Keyboard = {
     this.properties.capsLock = !this.properties.capsLock;
     for (const key of this.elements.keys) {
       if (key.childElementCount === 0) {
-        key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+        key.textContent = this.properties.capsLock
+          ? key.textContent.toUpperCase()
+          : key.textContent.toLowerCase();
       }
     }
   },
@@ -311,8 +333,8 @@ const Keyboard = {
     this._updateKeyContent();
   },
   _toggleSpeech() {
-       this.properties.speech = !this.properties.speech;
-     
+    this.properties.speech = !this.properties.speech;
+
     if (this.properties.speech) {
       this.properties.recognition.lang =
         this.properties.language == "en" ? "en-US" : "ru-RU";
@@ -329,35 +351,42 @@ const Keyboard = {
       this.properties.recognition.stop();
     }
     this.elements.keys.forEach((key) => {
-      if (key.childElementCount === 1){
-       const keyCode = key.getAttribute("data-code");
-     if (keyCode === "Mic") {
-        key.innerHTML = this.properties.speech? this._setKeyIconHTML('mic', keyCode) : this._setKeyIconHTML('mic_off', keyCode)
-     }
-    }
-  })
+      if (key.childElementCount === 1) {
+        const keyCode = key.getAttribute("data-code");
+        if (keyCode === "Mic") {
+          key.innerHTML = this.properties.speech
+            ? this._setKeyIconHTML("mic", keyCode)
+            : this._setKeyIconHTML("mic_off", keyCode);
+        }
+      }
+    });
   },
   _toggleSound() {
     this.properties.sound = !this.properties.sound;
     this.elements.keys.forEach((key) => {
-      if (key.childElementCount === 1){
-       const keyCode = key.getAttribute("data-code");
-     if (keyCode === "Sound") {
-        key.innerHTML = this.properties.sound? this._setKeyIconHTML('volume_off', keyCode) : this._setKeyIconHTML('volume_up', keyCode)
-     }
-    }
-  })
+      if (key.childElementCount === 1) {
+        const keyCode = key.getAttribute("data-code");
+        if (keyCode === "Sound") {
+          key.innerHTML = this.properties.sound
+            ? this._setKeyIconHTML("volume_off", keyCode)
+            : this._setKeyIconHTML("volume_up", keyCode);
+        }
+      }
+    });
   },
   _toggleTheme() {
-    this.properties.dark = !this.properties.dark; 
-    this.elements.keys.forEach((key) => {
-      if (key.childElementCount === 1){
-       const keyCode = key.getAttribute("data-code");
-     if (keyCode === "Theme") {
-        key.innerHTML = this.properties.dark? this._setKeyIconHTML('dark_mode', keyCode) : this._setKeyIconHTML('light_mode', keyCode)
-     }
-    }
-  })
+    this.properties.dark = !this.properties.dark;
+     this.elements.keys.forEach((key) => {
+     key.classList.toggle("light")
+     if (key.childElementCount === 1) {
+        const keyCode = key.getAttribute("data-code");
+        if (keyCode === "Theme") {
+          key.innerHTML = this.properties.dark
+            ? this._setKeyIconHTML("dark_mode", keyCode)
+            : this._setKeyIconHTML("light_mode", keyCode);
+        }
+      }
+    });
   },
 
   setCursorPosition(input, position) {
@@ -390,7 +419,8 @@ const Keyboard = {
   },
 };
 
-window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+window.SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 window.addEventListener("DOMContentLoaded", function () {
   Keyboard.init(keyboardLayout);
 });
