@@ -1,4 +1,4 @@
-//import { keyboardLayout } from "./KeyboardLayout";
+import { keyboardLayout } from "./KeyboardLayout.js";
 
 const Keyboard = {
   elements: {
@@ -32,6 +32,7 @@ const Keyboard = {
       "keyboard",
       "keyboard--hidden"
     );
+    this.elements.keyboardContainer.setAttribute('draggable', true);
     this.elements.keysContainer.classList.add("keyboard__container");
     this.elements.keysContainer.appendChild(this._createKeys(layout));
     this.elements.keys =
@@ -102,13 +103,13 @@ const Keyboard = {
           keyButton.classList.add("s-8");
           keyButton.innerHTML = this._setKeyIconHTML("keyboard_return", key);
           break;
-        case "Shift":
+        case "ShiftLeft":
           keyButton.classList.add("s-10");
-          keyButton.innerHTML = this._setKeyIconHTML("keyboard_return", key);
+          keyButton.innerHTML = `<span data-code=${key}>Shift</span>`;
           break;
         case "ShiftRight":
           keyButton.classList.add("s-10");
-          keyButton.innerHTML =this._setKeyIconHTML("keyboard_return", key);
+          keyButton.innerHTML = `<span data-code=${key}>Shift</span>`;
           break;
         case "Space":
           keyButton.classList.add("s-all");
@@ -159,7 +160,8 @@ const Keyboard = {
       this.properties.currentCursorPosition =
         this.properties.currentInput.selectionStart;
       switch (e.target.getAttribute("data-code")) {
-        case "Shift":
+        case "ShiftLeft":
+          case "ShiftRight":
           this._toggleShift();
           break;
         case "CapsLock":

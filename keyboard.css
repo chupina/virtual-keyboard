@@ -8,15 +8,18 @@ body {
 }
 
 .keyboard__container {
+  width: 100vw;
   margin: 0 auto;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (10px)[60];
-      grid-template-columns: repeat(60, 10px);
+  -ms-grid-columns: (minmax(10px, auto))[60];
+      grid-template-columns: repeat(60, minmax(10px, auto));
   -ms-grid-rows: (40px)[5];
       grid-template-rows: repeat(5, 40px);
-  grid-column-gap: 5px;
-  grid-row-gap: 10px;
+  grid-column-gap: 4px;
+  grid-row-gap: 8px;
+  position: fixed;
+  bottom: 10vh;
 }
 
 .keyboard__key {

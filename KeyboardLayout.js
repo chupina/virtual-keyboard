@@ -1,12 +1,19 @@
-const keyboardLayout = {
+export const keyboardLayout = {
   Backquote: {
     en: {
       value: "`",
       shift: "~",
     },
+    ru: {
+      value: "ё",
+         },
   },
   Digit1: {
     en: {
+      value: "1",
+      shift: "!",
+    },
+    ru: {
       value: "1",
       shift: "!",
     },
@@ -16,9 +23,17 @@ const keyboardLayout = {
       value: "2",
       shift: "@",
     },
+    ru: {
+      value: "2",
+      shift: "\"",
+    },
   },
   Digit3: {
     en: {
+      value: "3",
+      shift: "№",
+    },
+    ru: {
       value: "3",
       shift: "№",
     },
@@ -28,9 +43,17 @@ const keyboardLayout = {
       value: "4",
       shift: "$",
     },
+    ru: {
+      value: "4",
+      shift: ";",
+    },
   },
   Digit5: {
     en: {
+      value: "5",
+      shift: "%",
+    },
+    ru: {
       value: "5",
       shift: "%",
     },
@@ -40,11 +63,19 @@ const keyboardLayout = {
       value: "6",
       shift: "^",
     },
+    ru: {
+      value: "6",
+      shift: ":",
+    },
   },
   Digit7: {
     en: {
       value: "7",
       shift: "&",
+    },
+    ru: {
+      value: "7",
+      shift: "?",
     },
   },
   Digit8: {
@@ -52,21 +83,37 @@ const keyboardLayout = {
       value: "8",
       shift: "*",
     },
+    ru: {
+      value: "8",
+      shift: "*",
+    },
   },
   Digit9: {
     en: {
       value: "9",
-      shift: ")",
+      shift: "(",
+    },
+    ru: {
+      value: "9",
+      shift: "(",
     },
   },
   Digit0: {
     en: {
-      value: "f",
+      value: "0",
+      shift: ")",
+    },
+    ru: {
+      value: "0",
       shift: ")",
     },
   },
   Minus: {
     en: {
+      value: "-",
+      shift: "_",
+    },
+    ru: {
       value: "-",
       shift: "_",
     },
@@ -76,10 +123,14 @@ const keyboardLayout = {
       value: "=",
       shift: "+",
     },
+    ru: {
+      value: "=",
+      shift: "+",
+    },
   },
   Backspace: {
     en: {
-      value: "Backspace",
+      value: " ",
     },
   },
   Tab: {
@@ -91,50 +142,80 @@ const keyboardLayout = {
     en: {
       value: "q",
     },
+    ru:{
+      value: "й",
+    },
   },
   KeyW: {
     en: {
       value: "w",
+    },
+    ru:{
+      value: "ц",
     },
   },
   KeyE: {
     en: {
       value: "e",
     },
+    ru:{
+      value: "у",
+    },
   },
   KeyR: {
     en: {
       value: "r",
+    },
+    ru:{
+      value: "к",
     },
   },
   KeyT: {
     en: {
       value: "t",
     },
+    ru:{
+      value: "е",
+    },
   },
   KeyY: {
     en: {
       value: "y",
+    },
+    ru:{
+      value: "н",
     },
   },
   KeyU: {
     en: {
       value: "u",
     },
+    ru:{
+      value: "г",
+    },
   },
   KeyI: {
     en: {
       value: "i",
+    },
+    ru:{
+      value: "ш",
     },
   },
   KeyO: {
     en: {
       value: "o",
     },
+    ru:{
+      value: "щ",
+    },
   },
   KeyP: {
     en: {
       value: "p",
+    },
+    ru:{
+      value: "з",
     },
   },
   BracketLeft: {
@@ -142,130 +223,197 @@ const keyboardLayout = {
       value: "[",
       shift: "{",
     },
+    ru:{
+      value: "х",
+   },
   },
   BracketRight: {
     en: {
       value: "]",
       shift: "}",
     },
+    ru:{
+      value: "ъ",
+   },
   },
   Backslash: {
     en: {
       value: "\\",
       shift: "|",
     },
+    ru:{
+      value: "\\",
+      shift: "/"
+   },
   },
   CapsLock: {
     en: {
-      value: "Caps",
+      value: "",
     },
   },
   KeyA: {
     en: {
-      value: "q",
+      value: "a",
     },
+    ru:{
+      value: "ф",
+   },
   },
   KeyS: {
     en: {
-      value: "w",
+      value: "s",
     },
+    ru:{
+      value: "ы",
+   },
   },
   KeyD: {
     en: {
-      value: "e",
+      value: "d",
     },
+    ru:{
+      value: "в",
+   },
   },
   KeyF: {
     en: {
-      value: "r",
+      value: "f",
     },
+    ru:{
+      value: "а",
+   },
   },
   KeyG: {
     en: {
-      value: "t",
+      value: "g",
     },
+    ru:{
+      value: "п",
+   },
   },
   KeyH: {
     en: {
-      value: "y",
+      value: "h",
     },
+    ru:{
+      value: "р",
+   },
   },
   KeyJ: {
     en: {
-      value: "u",
+      value: "j",
     },
+    ru:{
+      value: "о",
+   },
   },
   KeyK: {
     en: {
-      value: "i",
+      value: "k",
     },
+    ru:{
+      value: "л",
+   },
   },
   KeyL: {
     en: {
-      value: "o",
+      value: "l",
     },
+    ru:{
+      value: "д",
+   },
   },
   Semicolon: {
     en: {
       value: ";",
       shift: ":",
     },
+    ru:{
+      value: "ж",
+   },
   },
   Quote: {
     en: {
       value: "'",
       shift: '"',
     },
+    ru:{
+      value: "э",
+   },
   },
   Enter: {
     en: {
       value: "Enter",
     },
   },
-  Shift: {
+  ShiftLeft: {
     en: {
       value: "Shift",
     },
   },
   KeyZ: {
     en: {
-      value: "q",
+      value: "z",
     },
+    ru:{
+      value: "я",
+   },
   },
   KeyX: {
     en: {
-      value: "w",
+      value: "x",
     },
+    ru:{
+      value: "ч",
+   },
   },
   KeyC: {
     en: {
-      value: "e",
+      value: "c",
     },
+    ru:{
+      value: "с",
+   },
   },
   KeyV: {
     en: {
-      value: "r",
+      value: "v",
     },
+    ru:{
+      value: "м",
+   },
   },
   KeyB: {
     en: {
-      value: "t",
+      value: "b",
     },
+    ru:{
+      value: "и",
+   },
   },
   KeyN: {
     en: {
-      value: "y",
+      value: "n",
+      ru:{
+        value: "т",
+     },
     },
   },
   KeyM: {
     en: {
-      value: "u",
+      value: "m",
     },
+    ru:{
+      value: "ь",
+   },
   },
   Comma: {
     en: {
       value: ",",
       shift: "<",
+    },
+    ru:{
+      value: "б",
     },
   },
   Period: {
@@ -273,11 +421,18 @@ const keyboardLayout = {
       value: ".",
       shift: ">",
     },
+    ru:{
+      value: "ю",
+    },
   },
   Slash: {
     en: {
       value: "/",
       shift: "?",
+    },
+    ru:{
+      value: ".",
+      shift:","
     },
   },
   ShiftRight: {
