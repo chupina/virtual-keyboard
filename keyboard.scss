@@ -9,18 +9,14 @@ min-height: 100vh;
 
 
 .keyboard__container {
-  .dark{
-   background-color: red;
-  }
-  width:100vw;
-  max-width: 900PX;
+    width:100vw;
+  max-width: 900px;
 margin: 20px auto;
 display: grid;
   grid-template-columns: repeat(60, minmax(10px, auto));
   grid-template-rows: repeat(5, 40px);
  grid-column-gap: 4px;
  grid-row-gap: 8px;
-  
  
 
 
@@ -32,7 +28,7 @@ display: grid;
   color: rgb(70, 69, 69);
   cursor: pointer;
   border-radius: 4px;
-  transition: box-shadow 0.3s ease, transform 0.15s ease;
+  transition: all 0.3s ease, transform 0.15s ease;
 
   border: 1px solid #949090;
   background-color: #4e4949;

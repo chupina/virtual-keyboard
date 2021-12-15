@@ -135,7 +135,7 @@ const Keyboard = {
           break;
         case "Mic":
           keyButton.classList.add("s-4");
-          keyButton.innerHTML = this._setKeyIconHTML("mic_off", key);
+          keyButton.innerHTML = this._setKeyIconHTML("mic", key);
           break;
         case "Sound":
           keyButton.classList.add("s-4");
